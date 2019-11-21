@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:FlagFacts"
+             xmlns:cvt="clr-namespace:FlagFacts.Converters"
              xmlns:eff="clr-namespace:FlagFacts.Effects"
              x:Class="FlagFacts.MainPage"
              Title="Fun with Flags">
@@ -14,6 +15,15 @@
         <ToolbarItem Text="Show" 
                      Clicked="OnShow" Icon="ic_action_search.png" />
     </ContentPage.ToolbarItems>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary>
+                <cvt:EmbeddedImageConverter x:Key="irConverter"
+                    ResolvingAssemblyType="{x:Type data:Flag}" />
+            </ResourceDictionary>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ScrollView>
         <StackLayout Spacing="10">
@@ -28,9 +38,10 @@
             <Image x:Name="flagImage" HeightRequest="200" 
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
-                    Aspect="AspectFit" />
+                    Aspect="AspectFit" 
+                   Source="{Binding ImageUrl, Mode=OneWay, Converter={StaticResource irConverter}}"/>
 
-            <Picker SelectedItem="{Binding Country}" />
+            <Picker x:Name="country" SelectedItem="{Binding Country}" />
 
             <Label Text="Current Design was Adopted on" FontAttributes="Bold" />
             <DatePicker MinimumDate="01/01/1700" HorizontalOptions="Start" Date="{Binding DateAdopted}" />
